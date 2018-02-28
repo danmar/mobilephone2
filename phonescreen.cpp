@@ -6,6 +6,7 @@ PhoneScreen::PhoneScreen(QWidget *parent) :
     ui(new Ui::PhoneScreen)
 {
     ui->setupUi(this);
+    ui->label->setText("");
     connect(ui->button0, &QPushButton::clicked, this, [this]{ nr(0); });
     connect(ui->button1, &QPushButton::clicked, this, [this]{ nr(1); });
     connect(ui->button2, &QPushButton::clicked, this, [this]{ nr(2); });
@@ -18,7 +19,6 @@ PhoneScreen::PhoneScreen(QWidget *parent) :
     connect(ui->button9, &QPushButton::clicked, this, [this]{ nr(9); });
     connect(ui->buttonDel, &QPushButton::clicked, this, &PhoneScreen::delNr);
     connect(ui->buttonHome, &QPushButton::clicked, this, &PhoneScreen::gotoHomeScreen);
-//    connect(ui->buttonAvbryt, &QPushButton::clicked, this, %Dial::avbryt);
 }
 
 PhoneScreen::~PhoneScreen()

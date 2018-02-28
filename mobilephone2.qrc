@@ -2,8 +2,9 @@
     <qresource prefix="/">
         <file>images/home.svg</file>
         <file>images/phone.svg</file>
-	<file>images/phone-green.svg</file>
+        <file>images/phone-green.svg</file>
         <file>images/sms.svg</file>
+        <file>images/sms-add.svg</file>
         <file>images/camera.svg</file>
         <file>images/backspace-arrow.svg</file>
     </qresource>
