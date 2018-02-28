@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file>images/home.svg</file>
     <file>images/phone.svg</file>
     <file>images/sms.svg</file>
     <file>images/camera.svg</file>

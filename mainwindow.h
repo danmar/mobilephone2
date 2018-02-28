@@ -15,8 +15,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void gotoHomeScreen();
+    void gotoSmsScreen();
+
 private:
     Ui::MainWindow *ui;
+    QWidget *currentScreen;
 };
 
 #endif // MAINWINDOW_H

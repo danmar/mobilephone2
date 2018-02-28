@@ -25,13 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    smsscreen.cpp \
+    homescreen.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    smsscreen.h \
+    homescreen.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    smsscreen.ui \
+    homescreen.ui
 
 RESOURCES = mobilephone2.qrc
 
