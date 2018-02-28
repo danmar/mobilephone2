@@ -16,6 +16,7 @@ public:
     ~HomeScreen();
 
 signals:
+    void gotoPhoneScreen();
     void gotoSmsScreen();
 
 private:
