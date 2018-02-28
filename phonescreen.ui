@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PhoneScreen</class>
- <widget class="QWidget" name="Dial">
+ <widget class="QWidget" name="PhoneScreen">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>217</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
@@ -36,26 +23,11 @@
          <pointsize>14</pointsize>
         </font>
        </property>
-       <property name="text">
-        <string>Number:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonDel">
-       <property name="maximumSize">
-        <size>
-         <width>32</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>Del</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -106,6 +78,7 @@
         <widget class="QPushButton" name="button2">
          <property name="font">
           <font>
+           <family>Cantarell</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -118,6 +91,7 @@
         <widget class="QPushButton" name="button1">
          <property name="font">
           <font>
+           <family>Cantarell</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -198,6 +172,34 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="2">
+        <widget class="QPushButton" name="buttonDel">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="mobilephone2.qrc">
+           <normaloff>:/images/backspace-arrow.svg</normaloff>:/images/backspace-arrow.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -214,19 +216,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>13</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -251,19 +240,39 @@
         </font>
        </property>
        <property name="text">
-        <string>OK</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/phone.svg</normaloff>:/images/phone.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonAvbryt">
+      <widget class="QPushButton" name="buttonHome">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Avbryt</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/home.svg</normaloff>:/images/home.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -284,6 +293,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="mobilephone2.qrc"/>
+ </resources>
  <connections/>
 </ui>
