@@ -1,3 +1,4 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2018-02-27T12:54:13
@@ -26,18 +27,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    smsscreen.cpp \
-    homescreen.cpp
+        smsscreen.cpp \
+        homescreen.cpp \
+        dialscreen.cpp
 
 HEADERS += \
         mainwindow.h \
-    smsscreen.h \
-    homescreen.h
+        smsscreen.h \
+        homescreen.h \
+        dialscreen.h
 
 FORMS += \
         mainwindow.ui \
-    smsscreen.ui \
-    homescreen.ui
+        smsscreen.ui \
+        homescreen.ui \
+        dialscreen.ui
 
 RESOURCES = mobilephone2.qrc
-
