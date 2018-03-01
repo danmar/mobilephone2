@@ -1,7 +1,7 @@
 #include "gsminterface.h"
 
 //#include <stdio.h>   /* Standard input/output definitions */
-//#include <string.h>  /* String function definitions */
+#include <string.h>  /* String function definitions */
 #include <unistd.h>  /* UNIX standard function definitions */
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
@@ -24,10 +24,10 @@ GsmInterface::~GsmInterface()
         close(fd);
 }
 
-QString GsmInterface::sendAndReceive(const char cmd[])
+std::string GsmInterface::sendAndReceive(const char cmd[])
 {
     if (!writeLine(cmd))
-        return QString();
+        return "";
     usleep(100000); // sleep 100 milliseconds
     return readLine();
 }
@@ -39,16 +39,16 @@ bool GsmInterface::writeLine(const char cmd[])
     return false;
 }
 
-QString GsmInterface::readLine()
+std::string GsmInterface::readLine()
 {
     if (fd == INVALID_FD)
-        return QString();
+        return "";
 
     char buf[4096] = {0};
     int n = read(fd, buf, sizeof(buf)-1);
     if (n>0)
         buf[n] = '\0';
-    QString resp;
+    std::string resp;
     const char *p = buf;
     while (const char *end = strstr(p,"\r\n")) {
         const char * const start = p;
@@ -58,7 +58,7 @@ QString GsmInterface::readLine()
         if (strncmp(start, "+SIND: ", 7) == 0)
             sind = atoi(start + 7);
         else
-            resp = QString::fromStdString(std::string(start,end-start));
+            resp = std::string(start, end-start);
     }
 
     return resp;

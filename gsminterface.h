@@ -1,7 +1,7 @@
 #ifndef GSMINTERFACE_H
 #define GSMINTERFACE_H
 
-#include <QString>
+#include <string>
 
 class GsmInterface
 {
@@ -13,9 +13,12 @@ public:
         return sendAndReceive("AT") == "OK";
     }
 
-    void dial(const QString &number) {
-        if (number.startsWith("070") && number.size() == 10)
-            writeLine(("ATD" + number).toStdString().c_str());
+    void dial(const std::string &number) {
+        writeLine(("ATD" + number).c_str());
+    }
+
+    void hangUp() {
+        writeLine("ATH");
     }
 
     int getsind() const {
@@ -23,9 +26,9 @@ public:
     }
 
 private:
-    QString sendAndReceive(const char cmd[]);
+    std::string sendAndReceive(const char cmd[]);
     bool writeLine(const char cmd[]);
-    QString readLine();
+    std::string readLine();
 
     int fd;
     int sind;
