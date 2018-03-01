@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "homescreen.h"
 #include "phonescreen.h"
+#include "hangupscreen.h"
 #include "smsscreen.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,7 +34,17 @@ void MainWindow::gotoPhoneScreen()
     delete currentScreen;
     PhoneScreen *phoneScreen = new PhoneScreen(this);
     connect(phoneScreen, &PhoneScreen::gotoHomeScreen, this, &MainWindow::gotoHomeScreen);
+    connect(phoneScreen, &PhoneScreen::gotoHangUpScreen, this, &MainWindow::gotoHangUpScreen);
     currentScreen = phoneScreen;
+    ui->centralWidget->layout()->addWidget(currentScreen);
+}
+
+void MainWindow::gotoHangUpScreen()
+{
+    delete currentScreen;
+    HangUpScreen *hangUpScreen = new HangUpScreen(this);
+    connect(hangUpScreen, &HangUpScreen::gotoHomeScreen, this, &MainWindow::gotoHomeScreen);
+    currentScreen = hangUpScreen;
     ui->centralWidget->layout()->addWidget(currentScreen);
 }
 

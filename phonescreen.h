@@ -18,9 +18,11 @@ public:
 public slots:
     void nr(int);
     void delNr();
+    void call();
 
 signals:
     void gotoHomeScreen();
+    void gotoHangUpScreen();
 
 private:
     Ui::PhoneScreen *ui;

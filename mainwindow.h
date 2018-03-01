@@ -18,6 +18,7 @@ public:
 public slots:
     void gotoHomeScreen();
     void gotoPhoneScreen();
+    void gotoHangUpScreen();
     void gotoSmsScreen();
 
 private:

@@ -20,7 +20,7 @@ PhoneScreen::PhoneScreen(QWidget *parent) :
     connect(ui->button9, &QPushButton::clicked, this, [this]{ nr(9); });
     connect(ui->buttonDel, &QPushButton::clicked, this, &PhoneScreen::delNr);
     connect(ui->buttonHome, &QPushButton::clicked, this, &PhoneScreen::gotoHomeScreen);
-    connect(ui->buttonCall, &QPushButton::clicked, this, [this]{ gsmInterface.dial(number); });
+    connect(ui->buttonCall, &QPushButton::clicked, this, &PhoneScreen::call);
 }
 
 PhoneScreen::~PhoneScreen()
@@ -36,4 +36,10 @@ void PhoneScreen::nr(int digit) {
 void PhoneScreen::delNr() {
     number.chop(1);
     ui->label->setText(number);
+}
+
+void PhoneScreen::call() {
+    if (number.startsWith("070") && number.size() == 10)
+        gsmInterface.dial(number.toStdString());
+    emit(gotoHangUpScreen());
 }
