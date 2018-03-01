@@ -5,7 +5,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,13 +30,15 @@ SOURCES += \
         mainwindow.cpp \
         smsscreen.cpp \
         homescreen.cpp \
-        phonescreen.cpp
+        phonescreen.cpp \
+        gsminterface.cpp
 
 HEADERS += \
         mainwindow.h \
         smsscreen.h \
         homescreen.h \
-        phonescreen.h
+        phonescreen.h \
+        gsminterface.h
 
 FORMS += \
         mainwindow.ui \
