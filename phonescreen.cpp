@@ -1,5 +1,6 @@
 #include "phonescreen.h"
 #include "ui_phonescreen.h"
+#include "gsminterface.h"
 
 PhoneScreen::PhoneScreen(QWidget *parent) :
     QWidget(parent),
@@ -19,6 +20,7 @@ PhoneScreen::PhoneScreen(QWidget *parent) :
     connect(ui->button9, &QPushButton::clicked, this, [this]{ nr(9); });
     connect(ui->buttonDel, &QPushButton::clicked, this, &PhoneScreen::delNr);
     connect(ui->buttonHome, &QPushButton::clicked, this, &PhoneScreen::gotoHomeScreen);
+    connect(ui->buttonCall, &QPushButton::clicked, this, [this]{ gsmInterface.dial(number); });
 }
 
 PhoneScreen::~PhoneScreen()

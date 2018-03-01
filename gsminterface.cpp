@@ -7,7 +7,6 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 
-
 #define INVALID_FD   (-1)
 
 GsmInterface gsmInterface;
@@ -56,7 +55,10 @@ QString GsmInterface::readLine()
         p = end + 2;
         if (start == end)
             continue;
-        resp = QString::fromStdString(std::string(start,end-start));
+        if (strncmp(start, "+SIND: ", 7) == 0)
+            sind = atoi(start + 7);
+        else
+            resp = QString::fromStdString(std::string(start,end-start));
     }
 
     return resp;
