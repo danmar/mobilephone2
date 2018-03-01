@@ -8,10 +8,14 @@ class GsmInterface
 public:
     GsmInterface();
     ~GsmInterface();
+
+    bool AT() { return sendAndReceive("AT") == "OK"; }
+
+private:
     QString sendAndReceive(const char cmd[]);
     bool writeLine(const char cmd[]);
     QString readLine();
-private:
+
     int fd;
 };
 

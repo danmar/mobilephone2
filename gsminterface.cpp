@@ -45,9 +45,19 @@ QString GsmInterface::readLine()
     if (fd == INVALID_FD)
         return QString();
 
-    char buf[1024] = {0};
+    char buf[4096] = {0};
     int n = read(fd, buf, sizeof(buf)-1);
     if (n>0)
         buf[n] = '\0';
-    return buf;
+    QString resp;
+    const char *p = buf;
+    while (const char *end = strstr(p,"\r\n")) {
+        const char * const start = p;
+        p = end + 2;
+        if (start == end)
+            continue;
+        resp = QString::fromStdString(std::string(start,end-start));
+    }
+
+    return resp;
 }
