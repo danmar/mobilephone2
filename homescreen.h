@@ -15,6 +15,9 @@ public:
     explicit HomeScreen(QWidget *parent = 0);
     ~HomeScreen();
 
+public slots:
+    void status();
+
 signals:
     void gotoPhoneScreen();
     void gotoSmsScreen();

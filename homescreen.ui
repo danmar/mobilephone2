@@ -13,57 +13,74 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPushButton" name="buttonPhone">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="mobilephone2.qrc">
-       <normaloff>:/images/phone.svg</normaloff>:/images/phone.svg</iconset>
-     </property>
-     <property name="iconSize">
+    <widget class="QLabel" name="label">
+     <property name="maximumSize">
       <size>
-       <width>64</width>
-       <height>100</height>
+       <width>16777215</width>
+       <height>20</height>
       </size>
+     </property>
+     <property name="text">
+      <string>Status</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="buttonSms">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="mobilephone2.qrc">
-       <normaloff>:/images/sms.svg</normaloff>:/images/sms.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>64</width>
-       <height>100</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="buttonCamera">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="mobilephone2.qrc">
-       <normaloff>:/images/camera.svg</normaloff>:/images/camera.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>64</width>
-       <height>100</height>
-      </size>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="buttonPhone">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/phone.svg</normaloff>:/images/phone.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonSms">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/sms.svg</normaloff>:/images/sms.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCamera">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/camera.svg</normaloff>:/images/camera.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

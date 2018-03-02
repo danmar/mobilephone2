@@ -63,3 +63,8 @@ std::string GsmInterface::readLine()
 
     return resp;
 }
+
+int GsmInterface::getsind() {
+    AT();
+    return sind;
+}

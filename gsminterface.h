@@ -9,6 +9,10 @@ public:
     GsmInterface();
     ~GsmInterface();
 
+    void restart() {
+        writeLine("AT+CFUN=1,1");
+    }
+
     bool AT() {
         return sendAndReceive("AT") == "OK";
     }
@@ -21,9 +25,7 @@ public:
         writeLine("ATH");
     }
 
-    int getsind() const {
-        return sind;
-    }
+    int getsind();
 
 private:
     std::string sendAndReceive(const char cmd[]);

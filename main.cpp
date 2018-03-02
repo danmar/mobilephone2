@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    bool at = gsmInterface.AT();
+    gsmInterface.restart();
 
     return a.exec();
 }
