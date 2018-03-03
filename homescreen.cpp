@@ -11,11 +11,10 @@ HomeScreen::HomeScreen(QWidget *parent) :
     connect(ui->buttonPhone, SIGNAL(clicked()), this, SIGNAL(gotoPhoneScreen()));
     connect(ui->buttonSms, SIGNAL(clicked()), this, SIGNAL(gotoSmsScreen()));
     QTimer *timer = new QTimer(this);
-    timer->setInterval(5000);
+    timer->setInterval(1000);
     timer->setSingleShot(false);
     timer->start();
     connect(timer, &QTimer::timeout, this, &HomeScreen::status);
-    status();
 }
 
 HomeScreen::~HomeScreen()
