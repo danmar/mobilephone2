@@ -21,8 +21,11 @@ public:
     }
 
     void dial(const std::string &number) {
-        writeLine(("ATD" + number).c_str());
+        if (status == SIND_CONNECTED)
+            writeLine(("ATD" + number).c_str());
     }
+
+    bool sendSms(const char phoneNumber[], const char text[]);
 
     void hangUp() {
         writeLine("ATH");

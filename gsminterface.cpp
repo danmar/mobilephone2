@@ -56,6 +56,21 @@ GsmInterface::~GsmInterface()
         close(fd);
 }
 
+bool GsmInterface::sendSms(const char phoneNumber[], const char text[])
+{
+    if (fd == INVALID_FD || status != SIND_CONNECTED)
+        return false;
+    if (sendAndReceive("AT+CMGF=1") != "OK") // set text format
+        return false;
+
+    std::string line = "AT+CMGS=\"" + std::string(phoneNumber) + '\"';
+    writeLine(line.c_str());
+    usleep(10000);
+    write(fd, text, strlen(text));
+    const char ctrlz[] = "\x1A";
+    write(fd, ctrlz, 1);
+}
+
 std::string GsmInterface::sendAndReceive(const char cmd[])
 {
     if (!writeLine(cmd)) {
