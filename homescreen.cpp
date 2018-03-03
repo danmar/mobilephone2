@@ -24,33 +24,18 @@ HomeScreen::~HomeScreen()
 
 void HomeScreen::status()
 {
-    int sind = gsmInterface.getsind();
-    const char *status;
-    switch (sind) {
-    case -1:
-        status = "Unknown status";
+    GsmInterface::STATUS status = gsmInterface.getStatus();
+    const char *str = "";
+    switch (status) {
+    case GsmInterface::STATUS::SIND_RESTARTING:
+        str = "Restarting...";
         break;
-    case 0:
-        status = "SIM card removed";
+    case GsmInterface::STATUS::SIND_DISCONNECTED:
+        str = "Disconnected";
         break;
-    case 1:
-        status = "SIM card inserted";
-        break;
-    case 3:
-        status = "AT module is partially ready";
-        break;
-    case 4:
-        status = "AT module is totally ready";
-        break;
-    case 8:
-        status = "The network is lost";
-        break;
-    case 11:
-        status = "Registered to network";
-        break;
-    default:
-        status = "";
+    case GsmInterface::STATUS::SIND_CONNECTED:
+        str = "Connected";
         break;
     }
-    ui->label->setText(status);
+    ui->label->setText(str);
 }

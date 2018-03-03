@@ -8,33 +8,16 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 
-#ifdef NO_QT
-#include <iostream>
-#define DEBUG   std::cout
-#define ENDL    std::endl
-#else
-//#include <QDebug>
-//#define DEBUG   qDebug()
-//#define ENDL    ""
-#include <fstream>
-#define DEBUG   fdebug
-#define ENDL    std::endl
-static std::ofstream fdebug("gsminterface.txt");
-#endif
 static const char PORT[] = "/dev/ttyUSB0";
+
+#define   DEBUG   if (debug) (*debug)
 
 #define INVALID_FD   (-1)
 
 GsmInterface gsmInterface;
 
-GsmInterface::GsmInterface() : sind(-1)
+static void setflags(int fd)
 {
-    fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
-    if (fd == INVALID_FD) {
-        DEBUG << "Failed to open port " << PORT << ENDL;
-        return;
-    }
-    fcntl(fd, F_SETFL, 0);
     struct termios serialPortSettings = {0};
     tcgetattr(fd, &serialPortSettings);
     cfsetispeed(&serialPortSettings, B115200);
@@ -55,6 +38,17 @@ GsmInterface::GsmInterface() : sind(-1)
     tcsetattr(fd, TCSANOW, &serialPortSettings);
 }
 
+GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING)
+{
+    fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
+    if (fd == INVALID_FD) {
+        DEBUG << "Failed to open port " << PORT << std::endl;
+        return;
+    }
+    fcntl(fd, F_SETFL, 0);
+    setflags(fd);
+}
+
 GsmInterface::~GsmInterface()
 {
     if (fd != INVALID_FD)
@@ -64,7 +58,7 @@ GsmInterface::~GsmInterface()
 std::string GsmInterface::sendAndReceive(const char cmd[])
 {
     if (!writeLine(cmd)) {
-        DEBUG << "Write failed" << ENDL;
+        DEBUG << "Write failed" << std::endl;
         return "";
     }
     usleep(100000); // sleep 100 milliseconds
@@ -73,7 +67,7 @@ std::string GsmInterface::sendAndReceive(const char cmd[])
 
 bool GsmInterface::writeLine(const char cmd[])
 {
-    DEBUG << "W:" << cmd << ENDL;
+    DEBUG << "W:" << cmd << std::endl;
     if (fd != INVALID_FD)
         return write(fd, cmd, std::strlen(cmd)) >= 0 && write(fd, "\r", 1) == 1;
     return false;
@@ -97,20 +91,18 @@ std::string GsmInterface::readLine()
             continue;
 
         const std::string line(start, end-start);
-        DEBUG << "r:" << line.c_str() << ENDL;
-        if (line.compare(0, 7, "+SIND: ") == 0)
-            sind = std::atoi(start + 7);
-        else
+        DEBUG << "r:" << line.c_str() << std::endl;
+        if (line.compare(0, 7, "+SIND: ") == 0) {
+            int sind = std::atoi(start + 7);
+            if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED) {
+                status = (STATUS)sind;
+            }
+        } else {
             resp = line;
+        }
     }
 
-    DEBUG << "R:" << resp.c_str() << ENDL;
+    DEBUG << "R:" << resp.c_str() << std::endl;
 
     return resp;
-}
-
-int GsmInterface::getsind()
-{
-    readLine();
-    return sind;
 }
