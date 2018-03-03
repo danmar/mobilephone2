@@ -10,6 +10,7 @@ public:
     ~GsmInterface();
 
     void restart() {
+        sind = -1;
         writeLine("AT+CFUN=1,1");
     }
 

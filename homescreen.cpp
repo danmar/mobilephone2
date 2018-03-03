@@ -26,6 +26,15 @@ void HomeScreen::status() {
     int sind = gsmInterface.getsind();
     const char *status;
     switch (sind) {
+    case -1:
+        status = "Unknown status";
+        break;
+    case 0:
+        status = "SIM card removed";
+        break;
+    case 1:
+        status = "SIM card inserted";
+        break;
     case 3:
         status = "AT module is partially ready";
         break;

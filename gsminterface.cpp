@@ -27,7 +27,7 @@ static const char PORT[] = "/dev/ttyUSB0";
 
 GsmInterface gsmInterface;
 
-GsmInterface::GsmInterface()
+GsmInterface::GsmInterface() : sind(-1)
 {
     fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd == INVALID_FD) {
