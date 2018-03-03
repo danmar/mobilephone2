@@ -28,8 +28,8 @@ static void setflags(int fd)
     serialPortSettings.c_cflag |=  CS8;   /* Set the data bits = 8 */
     serialPortSettings.c_cflag &= ~CRTSCTS;
     serialPortSettings.c_cflag |= CREAD | CLOCAL;
-    serialPortSettings.c_iflag &= ~(IXON | IXOFF | IXANY);
-    serialPortSettings.c_iflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+    serialPortSettings.c_iflag = IGNPAR;
+    serialPortSettings.c_oflag = 0;
 
     /* Setting Time outs -- non-blocking read */
     serialPortSettings.c_cc[VMIN]  = 0; /* Read 10 characters */
@@ -47,6 +47,7 @@ GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING)
     }
     fcntl(fd, F_SETFL, 0);
     setflags(fd);
+    sendAndReceive("");
 }
 
 GsmInterface::~GsmInterface()
@@ -91,7 +92,7 @@ std::string GsmInterface::readLine()
             continue;
 
         const std::string line(start, end-start);
-        DEBUG << "r:" << line.c_str() << std::endl;
+        DEBUG << "R:" << line.c_str() << std::endl;
         if (line.compare(0, 7, "+SIND: ") == 0) {
             int sind = std::atoi(start + 7);
             if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED) {
@@ -101,8 +102,5 @@ std::string GsmInterface::readLine()
             resp = line;
         }
     }
-
-    DEBUG << "R:" << resp.c_str() << std::endl;
-
     return resp;
 }
