@@ -10,11 +10,15 @@ HomeScreen::HomeScreen(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->buttonPhone, SIGNAL(clicked()), this, SIGNAL(gotoPhoneScreen()));
     connect(ui->buttonSms, SIGNAL(clicked()), this, SIGNAL(gotoSmsScreen()));
-    QTimer *timer = new QTimer(this);
-    timer->setInterval(1000);
-    timer->setSingleShot(false);
-    timer->start();
-    connect(timer, &QTimer::timeout, this, &HomeScreen::status);
+    if (!gsmInterface.AT())
+        ui->label->setText("No AT communication!");
+    else {
+        QTimer *timer = new QTimer(this);
+        timer->setInterval(1000);
+        timer->setSingleShot(false);
+        timer->start();
+        connect(timer, &QTimer::timeout, this, &HomeScreen::status);
+    }
 }
 
 HomeScreen::~HomeScreen()
@@ -28,7 +32,7 @@ void HomeScreen::status()
     const char *str = "";
     switch (status) {
     case GsmInterface::STATUS::SIND_RESTARTING:
-        str = "Restarting...";
+        str = "Connecting...";
         break;
     case GsmInterface::STATUS::SIND_DISCONNECTED:
         str = "Disconnected";
