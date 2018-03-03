@@ -1,6 +1,8 @@
 #include "gsminterface.h"
 
-#include <string.h>  /* String function definitions */
+#include <cstring>
+#include <cstdlib>
+
 #include <unistd.h>  /* UNIX standard function definitions */
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
@@ -69,7 +71,7 @@ bool GsmInterface::writeLine(const char cmd[])
 {
     DEBUG << "W:" << cmd << ENDL;
     if (fd != INVALID_FD)
-        return write(fd, cmd, strlen(cmd)) >= 0 && write(fd, "\r", 1) == 1;
+        return write(fd, cmd, std::strlen(cmd)) >= 0 && write(fd, "\r", 1) == 1;
     return false;
 }
 
@@ -84,7 +86,7 @@ std::string GsmInterface::readLine()
         buf[n] = '\0';
     std::string resp;
     const char *p = buf;
-    while (const char *end = strstr(p,"\r\n")) {
+    while (const char *end = std::strstr(p,"\r\n")) {
         const char * const start = p;
         p = end + 2;
         if (start == end)
@@ -93,7 +95,7 @@ std::string GsmInterface::readLine()
         const std::string line(start, end-start);
         DEBUG << "r:" << line.c_str() << ENDL;
         if (line.compare(0, 7, "+SIND: ") == 0)
-            sind = atoi(start + 7);
+            sind = std::atoi(start + 7);
         else
             resp = line;
     }
