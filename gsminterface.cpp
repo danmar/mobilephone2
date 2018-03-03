@@ -13,9 +13,13 @@
 #define DEBUG   std::cout
 #define ENDL    std::endl
 #else
-#include <QDebug>
-#define DEBUG   qDebug()
-#define ENDL    ""
+//#include <QDebug>
+//#define DEBUG   qDebug()
+//#define ENDL    ""
+#include <fstream>
+#define DEBUG   fdebug
+#define ENDL    std::endl
+static std::ofstream fdebug("gsminterface.txt");
 #endif
 static const char PORT[] = "/dev/ttyUSB0";
 
