@@ -66,6 +66,7 @@ bool GsmInterface::sendSms(const char phoneNumber[], const char text[])
     std::string line = "AT+CMGS=\"" + std::string(phoneNumber) + '\"';
     writeLine(line.c_str());
     usleep(10000);
+    DEBUG << "W:" << text << "\\1A" << std::endl;
     write(fd, text, strlen(text));
     const char ctrlz[] = "\x1A";
     write(fd, ctrlz, 1);
