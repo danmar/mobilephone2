@@ -4,11 +4,10 @@
 #include <QWidget>
 
 namespace Ui {
-class HangUpScreen;
+    class HangUpScreen;
 }
 
-class HangUpScreen : public QWidget
-{
+class HangUpScreen : public QWidget {
     Q_OBJECT
 
 public:

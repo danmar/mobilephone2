@@ -3,8 +3,7 @@
 
 #include <string>
 
-class GsmInterface
-{
+class GsmInterface {
 public:
     GsmInterface();
     ~GsmInterface();

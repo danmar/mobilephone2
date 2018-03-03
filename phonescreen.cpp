@@ -8,16 +8,16 @@ PhoneScreen::PhoneScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->label->setText("");
-    connect(ui->button0, &QPushButton::clicked, this, [this]{ nr(0); });
-    connect(ui->button1, &QPushButton::clicked, this, [this]{ nr(1); });
-    connect(ui->button2, &QPushButton::clicked, this, [this]{ nr(2); });
-    connect(ui->button3, &QPushButton::clicked, this, [this]{ nr(3); });
-    connect(ui->button4, &QPushButton::clicked, this, [this]{ nr(4); });
-    connect(ui->button5, &QPushButton::clicked, this, [this]{ nr(5); });
-    connect(ui->button6, &QPushButton::clicked, this, [this]{ nr(6); });
-    connect(ui->button7, &QPushButton::clicked, this, [this]{ nr(7); });
-    connect(ui->button8, &QPushButton::clicked, this, [this]{ nr(8); });
-    connect(ui->button9, &QPushButton::clicked, this, [this]{ nr(9); });
+    connect(ui->button0, &QPushButton::clicked, this, [this] { nr(0); });
+    connect(ui->button1, &QPushButton::clicked, this, [this] { nr(1); });
+    connect(ui->button2, &QPushButton::clicked, this, [this] { nr(2); });
+    connect(ui->button3, &QPushButton::clicked, this, [this] { nr(3); });
+    connect(ui->button4, &QPushButton::clicked, this, [this] { nr(4); });
+    connect(ui->button5, &QPushButton::clicked, this, [this] { nr(5); });
+    connect(ui->button6, &QPushButton::clicked, this, [this] { nr(6); });
+    connect(ui->button7, &QPushButton::clicked, this, [this] { nr(7); });
+    connect(ui->button8, &QPushButton::clicked, this, [this] { nr(8); });
+    connect(ui->button9, &QPushButton::clicked, this, [this] { nr(9); });
     connect(ui->buttonDel, &QPushButton::clicked, this, &PhoneScreen::delNr);
     connect(ui->buttonHome, &QPushButton::clicked, this, &PhoneScreen::gotoHomeScreen);
     connect(ui->buttonCall, &QPushButton::clicked, this, &PhoneScreen::call);
@@ -28,17 +28,20 @@ PhoneScreen::~PhoneScreen()
     delete ui;
 }
 
-void PhoneScreen::nr(int digit) {
+void PhoneScreen::nr(int digit)
+{
     number += QString::number(digit);
     ui->label->setText(number);
 }
 
-void PhoneScreen::delNr() {
+void PhoneScreen::delNr()
+{
     number.chop(1);
     ui->label->setText(number);
 }
 
-void PhoneScreen::call() {
+void PhoneScreen::call()
+{
     if (number.startsWith("070") && number.size() == 10)
         gsmInterface.dial(number.toStdString());
     emit(gotoHangUpScreen());

@@ -4,11 +4,10 @@
 #include <QWidget>
 
 namespace Ui {
-class SmsScreen;
+    class SmsScreen;
 }
 
-class SmsScreen : public QWidget
-{
+class SmsScreen : public QWidget {
     Q_OBJECT
 
 public:

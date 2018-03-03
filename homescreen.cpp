@@ -22,7 +22,8 @@ HomeScreen::~HomeScreen()
     delete ui;
 }
 
-void HomeScreen::status() {
+void HomeScreen::status()
+{
     int sind = gsmInterface.getsind();
     const char *status;
     switch (sind) {

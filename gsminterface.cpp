@@ -109,7 +109,8 @@ std::string GsmInterface::readLine()
     return resp;
 }
 
-int GsmInterface::getsind() {
+int GsmInterface::getsind()
+{
     readLine();
     return sind;
 }

@@ -2,7 +2,8 @@
 #include <iostream>
 #include "gsminterface.h"
 
-int main() {
+int main()
+{
     gsmInterface.AT();
     return 0;
 }
