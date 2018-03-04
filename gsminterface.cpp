@@ -38,7 +38,7 @@ static void setflags(int fd)
     tcsetattr(fd, TCSANOW, &serialPortSettings);
 }
 
-GsmInterface::GsmInterface() : debug(nullptr), lastSind(-1), status(SIND_RESTARTING), listingSms(false)
+GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING), fetchingSms(false), autoFetchSms(false)
 {
     fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd == INVALID_FD) {
@@ -111,19 +111,19 @@ std::string GsmInterface::readLine()
         const std::string line(start, end-start);
         DEBUG << "R:" << line.c_str() << std::endl;
         if (line.compare(0, 7, "+CMGL: ") == 0) {
-            smsMessages.push_back(SmsMessage(line.substr(7)));
+            _smsMessages.push_back(SmsMessage(line.substr(7)));
         } else if (line.compare(0, 7, "+SIND: ") == 0) {
             int sind = std::atoi(start + 7);
-            lastSind = sind;
-            if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED) {
+            if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED)
                 status = (STATUS)sind;
-            }
+            if (sind == 4 && autoFetchSms && !fetchingSms)
+                fetchSmsMessages();
         } else {
             resp = line;
             if (resp == "OK")
-                listingSms = false;
-            else if (listingSms)
-                smsMessages.back().text += line;
+                fetchingSms = false;
+            else if (fetchingSms)
+                _smsMessages.back().text += line;
         }
     }
     return resp;

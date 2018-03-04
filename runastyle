@@ -5,3 +5,4 @@ options="--options=none --pad-header --unpad-paren --suffix=none --convert-tabs 
 
 astyle $style $options *.cpp
 astyle $style $options *.h
+astyle $style $options test/*.cpp

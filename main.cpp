@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     w.showMaximized();
 
     gsmInterface.restart();
+    gsmInterface.setAutoFetchSms(true);
 
     return a.exec();
 }

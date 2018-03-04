@@ -16,7 +16,6 @@ public:
         clearInputBuffer();
         writeLine("AT+CFUN=1,1");
         status = SIND_RESTARTING;
-        lastSind = -1;
     }
 
     bool AT() {
@@ -43,11 +42,6 @@ public:
         return status;
     }
 
-    int getLastSind() {
-        readLine();
-        return lastSind;
-    }
-
     struct SmsMessage {
         SmsMessage(const std::string &in);
         bool received;
@@ -57,22 +51,28 @@ public:
         std::string text;
     };
 
-    void listSmsMessages() {
+    void fetchSmsMessages() {
+        if (fetchingSms)
+            return;
         clearInputBuffer();
         if (sendAndReceive("AT+CMGF=1") == "OK") {
             writeLine("AT+CMGL=\"REC ALL\"");
-            listingSms = true;
+            fetchingSms = true;
         }
     }
 
-    bool isListingSmsMessages() {
-        if (listingSms)
+    bool isFetchingSmsMessages() {
+        if (fetchingSms)
             readLine();
-        return listingSms;
+        return fetchingSms;
     }
 
-    std::vector<struct SmsMessage> getSmsMessages() const {
-        return smsMessages;
+    const std::vector<struct SmsMessage> &smsMessages() const {
+        return _smsMessages;
+    }
+
+    void setAutoFetchSms(bool b) {
+        autoFetchSms = b;
     }
 
 private:
@@ -85,10 +85,10 @@ private:
 
     int fd;
     std::ostream *debug;
-    int lastSind;
     enum STATUS status;
-    std::vector<struct SmsMessage> smsMessages;
-    bool listingSms;  // AT+CMGL command is in progress
+    std::vector<struct SmsMessage> _smsMessages;
+    bool fetchingSms;  // AT+CMGL command is in progress
+    bool autoFetchSms;
 };
 
 extern GsmInterface gsmInterface;
