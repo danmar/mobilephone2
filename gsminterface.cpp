@@ -38,7 +38,7 @@ static void setflags(int fd)
     tcsetattr(fd, TCSANOW, &serialPortSettings);
 }
 
-GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING)
+GsmInterface::GsmInterface() : debug(nullptr), lastSind(-1), status(SIND_RESTARTING), listingSms(false)
 {
     fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd == INVALID_FD) {
@@ -70,6 +70,7 @@ bool GsmInterface::sendSms(const char phoneNumber[], const char text[])
     write(fd, text, strlen(text));
     const char ctrlz[] = "\x1A";
     write(fd, ctrlz, 1);
+    return true;
 }
 
 std::string GsmInterface::sendAndReceive(const char cmd[])
@@ -109,14 +110,45 @@ std::string GsmInterface::readLine()
 
         const std::string line(start, end-start);
         DEBUG << "R:" << line.c_str() << std::endl;
-        if (line.compare(0, 7, "+SIND: ") == 0) {
+        if (line.compare(0, 7, "+CMGL: ") == 0) {
+            smsMessages.push_back(SmsMessage(line.substr(7)));
+        } else if (line.compare(0, 7, "+SIND: ") == 0) {
             int sind = std::atoi(start + 7);
+            lastSind = sind;
             if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED) {
                 status = (STATUS)sind;
             }
         } else {
             resp = line;
+            if (resp == "OK")
+                listingSms = false;
+            else if (listingSms)
+                smsMessages.back().text += line;
         }
     }
     return resp;
 }
+
+GsmInterface::SmsMessage::SmsMessage(const std::string &in)
+{
+    std::vector<std::string> split;
+    std::string current;
+    bool instr = false;
+    for (std::string::size_type i = 0; i < in.size(); ++i) {
+        if (!instr && in[i] == ',') {
+            split.push_back(current);
+            current.clear();
+        } else {
+            if (in[i] == '\"')
+                instr = !instr;
+            current += in[i];
+        }
+    }
+    split.push_back(current);
+
+    received = split.size() > 2 && split[2].compare(0, 5, "\"REC ") == 0;
+    read = split.size() > 2 && split[2].find("READ") != std::string::npos;
+    phoneNumber = split.size() > 3 ? split[3] : std::string();
+    time = split.size() > 4 ? split[4] : std::string();
+}
+

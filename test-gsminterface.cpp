@@ -7,25 +7,18 @@
 int main()
 {
     gsmInterface.setDebug(std::cout);
-    gsmInterface.restart();
-    int count = 0;
-    while (1) {
-        count++;
-        usleep(1000*1000);
-        GsmInterface::STATUS status = gsmInterface.getStatus();
-
-        std::cout << count << std::endl;
-
-        if (count >= 50 && status == GsmInterface::STATUS::SIND_CONNECTED) {
-            std::cout << "send sms" << std::endl;
-            gsmInterface.sendSms("0709124262", "test");
-            return 0;
-        }
-
-        if (status == GsmInterface::STATUS::SIND_DISCONNECTED && count > 1000) {
-            gsmInterface.restart();
-            count = 0;
-        }
+    //gsmInterface.restart();
+    if (!gsmInterface.AT()) {
+        std::cout << "AT failed\n";
+        return 1;
+    }
+    gsmInterface.listSmsMessages();
+    while (gsmInterface.isListingSmsMessages()) {
+        usleep(100000);
+    }
+    std::vector<GsmInterface::SmsMessage> v = gsmInterface.getSmsMessages();
+    for (int i = 0; i < v.size(); ++i) {
+        std::cout << v[i].phoneNumber << ':' << v[i].time << ':' << v[i].text << std::endl;
     }
     return 0;
 }
