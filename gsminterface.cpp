@@ -122,7 +122,7 @@ std::string GsmInterface::readLine()
             resp = line;
             if (resp == "OK")
                 fetchingSms = false;
-            else if (fetchingSms)
+            else if (fetchingSms && !_smsMessages.empty())
                 _smsMessages.back().text += line;
         }
     }
@@ -141,12 +141,13 @@ GsmInterface::SmsMessage::SmsMessage(const std::string &in)
         } else {
             if (in[i] == '\"')
                 instr = !instr;
-            current += in[i];
+            else
+                current += in[i];
         }
     }
     split.push_back(current);
 
-    received = split.size() > 2 && split[2].compare(0, 5, "\"REC ") == 0;
+    received = split.size() > 2 && split[2].compare(0, 4, "REC ") == 0;
     read = split.size() > 2 && split[2].find("READ") != std::string::npos;
     phoneNumber = split.size() > 3 ? split[3] : std::string();
     time = split.size() > 4 ? split[4] : std::string();

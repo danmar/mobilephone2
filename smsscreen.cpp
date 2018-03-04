@@ -16,7 +16,7 @@ SmsScreen::SmsScreen(QWidget *parent) :
     }
     nrs.reverse();
     for (std::string phoneNumber : nrs) {
-        if (phoneNumber == "0709124262")
+        if (phoneNumber == "+46709124262")
             phoneNumber = "DM";
         ui->listWidget->addItem(QString::fromStdString(phoneNumber));
     }

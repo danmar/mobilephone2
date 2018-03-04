@@ -56,7 +56,7 @@ public:
             return;
         clearInputBuffer();
         if (sendAndReceive("AT+CMGF=1") == "OK") {
-            writeLine("AT+CMGL=\"REC ALL\"");
+            writeLine("AT+CMGL=\"ALL\"");
             fetchingSms = true;
         }
     }
