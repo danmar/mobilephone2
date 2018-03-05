@@ -15,11 +15,12 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QListWidget" name="listWidget">
-     <property name="font">
-      <font>
-       <pointsize>18</pointsize>
-      </font>
+    <widget class="SmsListWidget" name="listWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
     </widget>
    </item>
@@ -63,6 +64,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SmsListWidget</class>
+   <extends>QWidget</extends>
+   <header>smslistwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="mobilephone2.qrc"/>
  </resources>

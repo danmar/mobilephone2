@@ -8,6 +8,7 @@ SmsScreen::SmsScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->buttonHome, SIGNAL(clicked()), this, SIGNAL(gotoHomeScreen()));
+
     std::list<std::string> nrs;
     for (const struct GsmInterface::SmsMessage &m : gsmInterface.smsMessages()) {
         if (std::find(nrs.begin(), nrs.end(), m.phoneNumber) == nrs.end()) {
@@ -15,9 +16,13 @@ SmsScreen::SmsScreen(QWidget *parent) :
         }
     }
     nrs.reverse();
+    for (int i = 0; i < 10; i++)
+        nrs.push_back("+46709124262" + QString::number(i).toStdString() + "\nabcd");
     for (std::string phoneNumber : nrs) {
-        if (phoneNumber == "+46709124262")
-            phoneNumber = "DM";
+        if (phoneNumber.compare(0,3,"+46")==0)
+            phoneNumber = '0' + phoneNumber.substr(3);
+        if (phoneNumber == "0709124262")
+            phoneNumber = "Daniel Marjamäki";
         ui->listWidget->addItem(QString::fromStdString(phoneNumber));
     }
 }
