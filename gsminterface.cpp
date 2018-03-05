@@ -57,6 +57,15 @@ GsmInterface::~GsmInterface()
         close(fd);
 }
 
+bool GsmInterface::AT()
+{
+    clearInputBuffer();
+    if (sendAndReceive("AT") == "OK")
+        return true;
+    usleep(10000);
+    return sendAndReceive("AT") == "OK";
+}
+
 void GsmInterface::fetchSmsMessagesFromFile()
 {
     std::ifstream fin("/home/danielm/mobilephone2/sms-list.txt");
@@ -74,12 +83,21 @@ void GsmInterface::fetchSmsMessagesFromFile()
 
 bool GsmInterface::sendSms(const char phoneNumber[], const char text[])
 {
+    std::string realPhoneNumber = phoneNumber;
+    if (realPhoneNumber == "Daniel Marjamäki")
+        realPhoneNumber = "0709124262";
+    for (int i = 0; i < realPhoneNumber.size(); ++i) {
+        if (realPhoneNumber[i] < '0' || realPhoneNumber[i] > '9')
+            return false;
+    }
+
     if (fd == INVALID_FD || status != SIND_CONNECTED)
         return false;
+
     if (sendAndReceive("AT+CMGF=1") != "OK") // set text format
         return false;
 
-    std::string line = "AT+CMGS=\"" + std::string(phoneNumber) + '\"';
+    const std::string line = "AT+CMGS=\"" + realPhoneNumber + '\"';
     writeLine(line.c_str());
     usleep(10000);
     DEBUG << "W:" << text << "\\1A" << std::endl;

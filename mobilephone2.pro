@@ -35,7 +35,9 @@ SOURCES += \
         phonescreen.cpp \
         gsminterface.cpp \
         hangupscreen.cpp \
-        smslistwidget.cpp
+        smslistwidget.cpp \
+        writesmsscreen.cpp \
+        virtualkeyboard.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,13 +46,16 @@ HEADERS += \
         phonescreen.h \
         gsminterface.h \
         hangupscreen.h \
-        smslistwidget.h
+        smslistwidget.h \
+        writesmsscreen.h \
+        virtualkeyboard.h
 
 FORMS += \
         mainwindow.ui \
         smsscreen.ui \
         homescreen.ui \
         phonescreen.ui \
-        hangupscreen.ui
+        hangupscreen.ui \
+        writesmsscreen.ui
 
 RESOURCES = mobilephone2.qrc

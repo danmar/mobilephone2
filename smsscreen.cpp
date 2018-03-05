@@ -7,7 +7,8 @@ SmsScreen::SmsScreen(QWidget *parent) :
     ui(new Ui::SmsScreen)
 {
     ui->setupUi(this);
-    connect(ui->buttonHome, SIGNAL(clicked()), this, SIGNAL(gotoHomeScreen()));
+    connect(ui->buttonHome, &QPushButton::clicked, this, &SmsScreen::gotoHomeScreen);
+    connect(ui->buttonAdd, &QPushButton::clicked, this, [this] { emit(SmsScreen::gotoWriteSmsScreen(ui->listWidget->getPhoneNumber())); });
 }
 
 SmsScreen::~SmsScreen()

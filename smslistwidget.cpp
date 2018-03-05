@@ -15,6 +15,7 @@ SmsListWidget::SmsListWidget(QWidget *parent) : QWidget(parent), y(0)
 
 void SmsListWidget::listAll()
 {
+    currentPhoneNumber.clear();
     screen = MAIN_SCREEN;
     lines.clear();
 
@@ -35,10 +36,10 @@ void SmsListWidget::listAll()
 void SmsListWidget::details(int i)
 {
     screen = DETAILS_SCREEN;
-    QString phoneNumber = lines[i];
+    currentPhoneNumber = lines[i];
     lines.clear();
     for (const struct GsmInterface::SmsMessage &m : gsmInterface.smsMessages()) {
-        if (phoneNumber == m.phoneNumber.c_str())
+        if (currentPhoneNumber == m.phoneNumber.c_str())
             lines << QString::fromStdString((m.received ? 'R' : 'S') + m.text);
     }
     update();

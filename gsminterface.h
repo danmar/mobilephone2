@@ -18,9 +18,7 @@ public:
         status = SIND_RESTARTING;
     }
 
-    bool AT() {
-        return sendAndReceive("AT") == "OK";
-    }
+    bool AT();
 
     void dial(const std::string &number) {
         if (status == SIND_CONNECTED)

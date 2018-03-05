@@ -16,6 +16,7 @@ public:
 
 signals:
     void gotoHomeScreen();
+    void gotoWriteSmsScreen(QString phoneNumber);
 
 private:
     Ui::SmsScreen *ui;

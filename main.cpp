@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 //    w.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     w.showMaximized();
 
+    gsmInterface.AT();
     gsmInterface.restart();
     gsmInterface.setAutoFetchSms(true);
     gsmInterface.fetchSmsMessagesFromFile();

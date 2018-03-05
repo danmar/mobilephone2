@@ -6,6 +6,7 @@
         <file>images/phone-hang-up.svg</file>
         <file>images/sms.svg</file>
         <file>images/sms-add.svg</file>
+        <file>images/sms-send.svg</file>
         <file>images/camera.svg</file>
         <file>images/backspace-arrow.svg</file>
     </qresource>

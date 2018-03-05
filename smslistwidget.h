@@ -10,6 +10,9 @@ public:
     explicit SmsListWidget(QWidget *parent = 0);
 
     void addItem(QString text);
+    QString getPhoneNumber() const {
+        return currentPhoneNumber;
+    }
 
 signals:
     void openItem(QString phoneNumber);
@@ -33,6 +36,7 @@ private:
     enum { MAIN_SCREEN, DETAILS_SCREEN } screen;
     QFont boldFont;
     QFont normalFont;
+    QString currentPhoneNumber;
 };
 
 #endif // SMSLISTWIDGET_H

@@ -19,6 +19,7 @@ public slots:
     void gotoPhoneScreen();
     void gotoHangUpScreen();
     void gotoSmsScreen();
+    void gotoWriteSmsScreen(QString phoneNumber);
 
 private:
     Ui::MainWindow *ui;

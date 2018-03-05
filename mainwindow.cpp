@@ -4,6 +4,7 @@
 #include "phonescreen.h"
 #include "hangupscreen.h"
 #include "smsscreen.h"
+#include "writesmsscreen.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -54,6 +55,17 @@ void MainWindow::gotoSmsScreen()
     SmsScreen *smsScreen = new SmsScreen(this);
     ui->centralWidget->layout()->addWidget(smsScreen);
     connect(smsScreen, &SmsScreen::gotoHomeScreen, this, &MainWindow::gotoHomeScreen);
+    connect(smsScreen, &SmsScreen::gotoWriteSmsScreen, this, &MainWindow::gotoWriteSmsScreen);
     currentScreen = smsScreen;
+    ui->centralWidget->layout()->addWidget(currentScreen);
+}
+
+void MainWindow::gotoWriteSmsScreen(QString phoneNumber)
+{
+    delete currentScreen;
+    WriteSmsScreen *writeSmsScreen = new WriteSmsScreen(this, phoneNumber);
+    ui->centralWidget->layout()->addWidget(writeSmsScreen);
+    connect(writeSmsScreen, &WriteSmsScreen::gotoHomeScreen, this, &MainWindow::gotoHomeScreen);
+    currentScreen = writeSmsScreen;
     ui->centralWidget->layout()->addWidget(currentScreen);
 }
