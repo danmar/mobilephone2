@@ -25,10 +25,28 @@ public:
             writeLine(("ATD" + number).c_str());
     }
 
+    void answer() {
+        if (ringing)
+            sendAndReceive("ATA");
+        ringing = false;
+        clip.clear();
+    }
+
+    bool isRinging() {
+        readLine();
+        return ringing;
+    }
+
+    std::string callerPhoneNumber() {
+        return clip;
+    }
+
     bool sendSms(const char phoneNumber[], const char text[]);
 
     void hangUp() {
-        writeLine("ATH");
+        sendAndReceive("ATH");
+        ringing = false;
+        clip.clear();
     }
 
     void setDebug(std::ostream &ostr) {
@@ -90,6 +108,8 @@ private:
     std::vector<struct SmsMessage> _smsMessages;
     bool fetchingSms;  // AT+CMGL command is in progress
     bool autoFetchSms;
+    bool ringing;
+    std::string clip;
 };
 
 extern GsmInterface gsmInterface;

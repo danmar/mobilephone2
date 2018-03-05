@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RingScreen</class>
+ <widget class="QWidget" name="RingScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>32</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Det ringer!</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="callerPhoneNumber">
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="buttonAnswer">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/phone-green.svg</normaloff>:/images/phone-green.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonHangup">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="mobilephone2.qrc">
+         <normaloff>:/images/phone-hang-up.svg</normaloff>:/images/phone-hang-up.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="mobilephone2.qrc"/>
+ </resources>
+ <connections/>
+</ui>

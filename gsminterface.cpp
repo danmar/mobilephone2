@@ -39,7 +39,7 @@ static void setflags(int fd)
     tcsetattr(fd, TCSANOW, &serialPortSettings);
 }
 
-GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING), fetchingSms(false), autoFetchSms(false)
+GsmInterface::GsmInterface() : debug(nullptr), status(SIND_RESTARTING), fetchingSms(false), autoFetchSms(false), ringing(false)
 {
     fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd == INVALID_FD) {
@@ -150,8 +150,20 @@ std::string GsmInterface::readLine()
             int sind = std::atoi(start + 7);
             if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED)
                 status = (STATUS)sind;
-            if (sind == 4 && autoFetchSms && !fetchingSms)
-                fetchSmsMessages();
+            if (sind == 4) {
+                sendAndReceive("AT+CLIP=1");
+                if (autoFetchSms && !fetchingSms)
+                    fetchSmsMessages();
+            }
+        } else if (line == "RING") {
+            ringing = true;
+        } else if (line.compare(0,8,"+CLIP: \"") == 0) {
+            std::string::size_type pos = line.find('\"',9);
+            clip = line.substr(9,pos-9);
+            DEBUG << "   clip=" << clip;
+        } else if (line == "NO CARRIER") {
+            ringing = false;
+            clip.clear();
         } else {
             resp = line;
             if (resp == "OK")

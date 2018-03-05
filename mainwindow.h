@@ -15,6 +15,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void gsm();
     void gotoHomeScreen();
     void gotoPhoneScreen();
     void gotoHangUpScreen();

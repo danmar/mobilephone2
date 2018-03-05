@@ -1,10 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "gsminterface.h"
 #include "homescreen.h"
 #include "phonescreen.h"
 #include "hangupscreen.h"
+#include "ringscreen.h"
 #include "smsscreen.h"
 #include "writesmsscreen.h"
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,11 +16,29 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     gotoHomeScreen();
+
+    QTimer *timer = new QTimer(this);
+    timer->setInterval(1000);
+    timer->setSingleShot(false);
+    timer->start();
+    connect(timer, &QTimer::timeout, this, &MainWindow::gsm);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::gsm()
+{
+    if (gsmInterface.isRinging()) {
+        delete currentScreen;
+        RingScreen *ringScreen = new RingScreen(this);
+        connect(ringScreen, &RingScreen::gotoHomeScreen, this, &MainWindow::gotoHomeScreen);
+        connect(ringScreen, &RingScreen::gotoHangupScreen, this, &MainWindow::gotoHangUpScreen);
+        currentScreen = ringScreen;
+        ui->centralWidget->layout()->addWidget(currentScreen);
+    }
 }
 
 void MainWindow::gotoHomeScreen()
