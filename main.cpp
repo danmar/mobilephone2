@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
         gsmInterface.setDebug(fout);
     gsmInterface.AT();
     gsmInterface.restart();
-    gsmInterface.setAutoFetchSms(true);
+    //gsmInterface.setAutoFetchSms(true);
     gsmInterface.fetchSmsMessagesFromFile();
 
     return a.exec();

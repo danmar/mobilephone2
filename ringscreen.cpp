@@ -16,6 +16,7 @@ RingScreen::RingScreen(QWidget *parent) :
     timer->setSingleShot(false);
     timer->start();
     connect(timer, &QTimer::timeout, this, &RingScreen::gsm);
+    gsm();
 }
 
 RingScreen::~RingScreen()
@@ -25,10 +26,11 @@ RingScreen::~RingScreen()
 
 void RingScreen::gsm()
 {
+    std::string phoneNumber = gsmInterface.callerPhoneNumber();
     if (!gsmInterface.isRinging())
         emit(gotoHomeScreen());
     else
-        ui->callerPhoneNumber->setText(gsmInterface.callerPhoneNumber().c_str());
+        ui->callerPhoneNumber->setText(phoneNumber.c_str());
 }
 
 void RingScreen::answer()

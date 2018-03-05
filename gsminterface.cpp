@@ -158,9 +158,9 @@ std::string GsmInterface::readLine()
         } else if (line == "RING") {
             ringing = true;
         } else if (line.compare(0,8,"+CLIP: \"") == 0) {
-            std::string::size_type pos = line.find('\"',9);
-            clip = line.substr(9,pos-9);
-            DEBUG << "   clip=" << clip;
+            std::string::size_type pos = line.find('\"',8);
+            clip = line.substr(8,pos-8);
+            DEBUG << "   clip=" << clip << std::endl;
         } else if (line == "NO CARRIER") {
             ringing = false;
             clip.clear();
