@@ -4,13 +4,15 @@
 #include <QWidget>
 #include <QtWidgets>
 
-class SmsListWidget : public QWidget
-{
+class SmsListWidget : public QWidget {
     Q_OBJECT
 public:
     explicit SmsListWidget(QWidget *parent = 0);
 
     void addItem(QString text);
+
+signals:
+    void openItem(QString phoneNumber);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

@@ -76,4 +76,6 @@ void SmsListWidget::mouseReleaseEvent(QMouseEvent *event)
     const int y = position + event->y();
     const int itemIndex = y / ITEM_HEIGHT;
     qDebug() << itemIndex;
+    const QString &line = lines[itemIndex];
+    emit(openItem(line.mid(line.indexOf('\n'))));
 }
