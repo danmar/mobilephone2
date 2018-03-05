@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 
     gsmInterface.restart();
     gsmInterface.setAutoFetchSms(true);
+    gsmInterface.fetchSmsMessagesFromFile();
 
     return a.exec();
 }

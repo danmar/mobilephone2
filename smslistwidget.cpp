@@ -1,5 +1,7 @@
 #include "smslistwidget.h"
 #include <QtWidgets>
+#include "gsminterface.h"
+#include <list>
 
 static const int ITEM_HEIGHT = 45;
 
@@ -8,6 +10,38 @@ SmsListWidget::SmsListWidget(QWidget *parent) : QWidget(parent), y(0)
     position = 0;
     boldFont = QFont("Serif", 10, QFont::Bold);
     normalFont = QFont("Serif", 10, QFont::Normal);
+    listAll();
+}
+
+void SmsListWidget::listAll()
+{
+    screen = MAIN_SCREEN;
+    lines.clear();
+
+    std::list<std::string> nrs;
+    for (const struct GsmInterface::SmsMessage &m : gsmInterface.smsMessages()) {
+        if (std::find(nrs.begin(), nrs.end(), m.phoneNumber) == nrs.end()) {
+            nrs.push_back(m.phoneNumber);
+        }
+    }
+    nrs.reverse();
+    for (std::string phoneNumber : nrs) {
+        lines << QString::fromStdString(phoneNumber);
+    }
+
+    update();
+}
+
+void SmsListWidget::details(int i)
+{
+    screen = DETAILS_SCREEN;
+    QString phoneNumber = lines[i];
+    lines.clear();
+    for (const struct GsmInterface::SmsMessage &m : gsmInterface.smsMessages()) {
+        if (phoneNumber == m.phoneNumber.c_str())
+            lines << QString::fromStdString((m.received ? 'R' : 'S') + m.text);
+    }
+    update();
 }
 
 void SmsListWidget::addItem(QString text)
@@ -18,8 +52,15 @@ void SmsListWidget::addItem(QString text)
 
 void SmsListWidget::paintEvent(QPaintEvent*)
 {
-    QPainter painter(this);
+    if (screen == MAIN_SCREEN)
+        drawMainScreen();
+    else
+        drawDetailsScreen();
+}
 
+void SmsListWidget::drawMainScreen()
+{
+    QPainter painter(this);
     painter.setBrush(QColor(255,255,255));
     painter.drawRect(rect());
 
@@ -43,6 +84,48 @@ void SmsListWidget::paintEvent(QPaintEvent*)
 
         painter.setPen(QColor(0x40, 0x40, 0x40));
         painter.drawLine(0, y+40, width(), y+40);
+    }
+}
+
+static QStringList wordWrap(QString str, int width, const QFontMetrics &fontMetrics)
+{
+    QStringList ret;
+    int i1 = 0, i2 = 0;
+    QString currentLine = "";
+    while ((i2 = str.indexOf(' ', i1+1)) >= 0) {
+        QString word = str.mid(i1, i2-i1);
+        i1 = i2;
+        int tw = fontMetrics.width(currentLine + word);
+        if (tw > width) {
+            ret << currentLine.trimmed();
+            currentLine = word.trimmed();
+        } else {
+            currentLine += word;
+        }
+    }
+    ret << (currentLine + str.mid(i1));
+    return ret;
+}
+
+void SmsListWidget::drawDetailsScreen()
+{
+    QPainter painter(this);
+    painter.setBrush(QColor(255,255,255));
+    painter.drawRect(rect());
+    painter.setFont(normalFont);
+
+    QFontMetrics fontMetrics(normalFont);
+    int y = -position;
+    for (int i = 0; i < lines.size(); ++i) {
+        bool received = lines[i].startsWith("R");
+        QStringList wrapped = wordWrap(lines[i].mid(1), 3 * width() / 4, fontMetrics);
+        foreach (QString s, wrapped) {
+            y += fontMetrics.height();
+            painter.drawText(received ? (width() / 4 - 5) : 5, y, s);
+        }
+        y += 5;
+        painter.drawLine(0,y,width(),y);
+        y += 5;
     }
 }
 
@@ -71,11 +154,10 @@ void SmsListWidget::mouseMoveEvent(QMouseEvent *event)
 
 void SmsListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->x() < width() - 20)
-        return;
-    const int y = position + event->y();
-    const int itemIndex = y / ITEM_HEIGHT;
-    qDebug() << itemIndex;
-    const QString &line = lines[itemIndex];
-    emit(openItem(line.mid(line.indexOf('\n'))));
+    if (event->x() >= width() - 20) {
+        const int y = position + event->y();
+        details(y / ITEM_HEIGHT);
+    } else {
+        // soft scroll..
+    }
 }

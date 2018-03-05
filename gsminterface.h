@@ -58,8 +58,11 @@ public:
         if (sendAndReceive("AT+CMGF=1") == "OK") {
             writeLine("AT+CMGL=\"ALL\"");
             fetchingSms = true;
+            _smsMessages.clear();
         }
     }
+
+    void fetchSmsMessagesFromFile();
 
     bool isFetchingSmsMessages() {
         if (fetchingSms)

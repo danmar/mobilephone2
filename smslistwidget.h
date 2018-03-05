@@ -22,10 +22,15 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
+    void listAll();
+    void details(int i);
+    void drawMainScreen();
+    void drawDetailsScreen();
 
     QStringList lines;
     int position;
     int y;
+    enum { MAIN_SCREEN, DETAILS_SCREEN } screen;
     QFont boldFont;
     QFont normalFont;
 };

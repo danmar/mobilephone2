@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <fstream>
 
 #include <unistd.h>  /* UNIX standard function definitions */
 #include <fcntl.h>   /* File control definitions */
@@ -54,6 +55,21 @@ GsmInterface::~GsmInterface()
 {
     if (fd != INVALID_FD)
         close(fd);
+}
+
+void GsmInterface::fetchSmsMessagesFromFile()
+{
+    std::ifstream fin("/home/danielm/mobilephone2/sms-list.txt");
+    if (!fin.is_open())
+        return;
+    _smsMessages.clear();
+    std::string line;
+    while (std::getline(fin, line)) {
+        if (line.compare(0,6,"+CMGL:")==0)
+            _smsMessages.push_back(SmsMessage(line.substr(6)));
+        else if (!_smsMessages.empty())
+            _smsMessages.back().text += line;
+    }
 }
 
 bool GsmInterface::sendSms(const char phoneNumber[], const char text[])
@@ -110,8 +126,8 @@ std::string GsmInterface::readLine()
 
         const std::string line(start, end-start);
         DEBUG << "R:" << line.c_str() << std::endl;
-        if (line.compare(0, 7, "+CMGL: ") == 0) {
-            _smsMessages.push_back(SmsMessage(line.substr(7)));
+        if (line.compare(0, 6, "+CMGL:") == 0) {
+            _smsMessages.push_back(SmsMessage(line.substr(6)));
         } else if (line.compare(0, 7, "+SIND: ") == 0) {
             int sind = std::atoi(start + 7);
             if (sind == SIND_DISCONNECTED || sind == SIND_CONNECTED)
@@ -150,6 +166,10 @@ GsmInterface::SmsMessage::SmsMessage(const std::string &in)
     received = split.size() > 2 && split[2].compare(0, 4, "REC ") == 0;
     read = split.size() > 2 && split[2].find("READ") != std::string::npos;
     phoneNumber = split.size() > 3 ? split[3] : std::string();
+    if (phoneNumber.compare(0,3,"+46")==0)
+        phoneNumber = '0' + phoneNumber.substr(3);
+    if (phoneNumber == "0709124262")
+        phoneNumber = "Daniel Marjamäki";
     time = split.size() > 4 ? split[4] : std::string();
 }
 
