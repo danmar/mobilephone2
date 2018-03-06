@@ -66,9 +66,9 @@ bool GsmInterface::AT()
     return sendAndReceive("AT") == "OK";
 }
 
-void GsmInterface::fetchSmsMessagesFromFile()
+void GsmInterface::fetchSmsMessagesFromFile(const char filename[])
 {
-    std::ifstream fin("/home/danielm/mobilephone2/sms-list.txt");
+    std::ifstream fin(filename);
     if (!fin.is_open())
         return;
     _smsMessages.clear();

@@ -78,7 +78,7 @@ public:
         }
     }
 
-    void fetchSmsMessagesFromFile();
+    void fetchSmsMessagesFromFile(const char filename[]);
 
     bool isFetchingSmsMessages() {
         if (fetchingSms)
